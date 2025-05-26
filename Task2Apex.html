@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact Form & Smart To-Do List</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      color: white;
+      margin-top: 30px;
+    }
+
+    .container {
+      display: flex;
+      gap: 40px;
+      margin: 40px;
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      flex-wrap: wrap;
+      max-width: 1000px;
+      width: 90%;
+    }
+
+    .form-container, .todo-container {
+      flex: 1 1 300px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input, button, select {
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #667eea;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #5a67d8;
+    }
+
+    .todo-list {
+      margin-top: 20px;
+    }
+
+    .todo-item {
+      background: #f9f9f9;
+      padding: 10px 15px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .priority {
+      font-size: 0.8rem;
+      padding: 3px 8px;
+      border-radius: 12px;
+      color: white;
+    }
+
+    .High {
+      background-color: #e53e3e;
+    }
+
+    .Medium {
+      background-color: #ed8936;
+    }
+
+    .Low {
+      background-color: #38a169;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Contact Us & Smart To-Do List</h1>
+
+  <div class="container">
+    <!-- Contact Form -->
+    <div class="form-container">
+      <h2>Contact Form</h2>
+      <form id="contactForm">
+        <input type="text" id="name" placeholder="Your Name" required />
+        <input type="email" id="email" placeholder="Your Email" required />
+        <button type="submit">Submit</button>
+        <p id="formMessage" style="color: green;"></p>
+      </form>
+    </div>
+
+    <!-- To-Do List -->
+    <div class="todo-container">
+      <h2>Smart To-Do List</h2>
+      <form id="todoForm">
+        <input type="text" id="task" placeholder="Enter your task" required />
+        <select id="priority">
+          <option value="High">High Priority</option>
+          <option value="Medium">Medium Priority</option>
+          <option value="Low">Low Priority</option>
+        </select>
+        <button type="submit">Add Task</button>
+      </form>
+      <div class="todo-list" id="todoList"></div>
+    </div>
+  </div>
+
+  <script>
+    // Contact Form Validation
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('formMessage');
+
+      if (!name || !email) {
+        message.style.color = "red";
+        message.textContent = "Please fill in all fields.";
+        return;
+      }
+
+      // Simple email regex
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      if (!emailPattern.test(email)) {
+        message.style.color = "red";
+        message.textContent = "Please enter a valid email.";
+        return;
+      }
+
+      message.style.color = "green";
+      message.textContent = "Form submitted successfully!";
+      this.reset();
+    });
+
+    // Smart To-Do List
+    document.getElementById('todoForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const task = document.getElementById('task').value.trim();
+      const priority = document.getElementById('priority').value;
+      const todoList = document.getElementById('todoList');
+
+      if (!task) return;
+
+      const item = document.createElement('div');
+      item.classList.add('todo-item');
+
+      item.innerHTML = `
+        <span>${task}</span>
+        <span class="priority ${priority}">${priority}</span>
+      `;
+
+      todoList.prepend(item); // Most recent on top
+      this.reset();
+    });
+  </script>
+
+</body>
+</html>
